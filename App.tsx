@@ -1,16 +1,16 @@
 
 import React, { useState } from 'react';
-import Layout from './components/Layout';
-import IntakeForm from './components/IntakeForm';
-import ProcessingState from './components/ProcessingState';
-import ResultsView from './components/ResultsView';
-import SettingsManager from './components/SettingsManager';
-import SalesTeamSection from './components/SalesTeamSection';
-import DemoGallery from './components/DemoGallery';
-import { StagingProject, PropertyType } from './types';
-import { PRICING_TIERS } from './constants';
-import { stageRoom } from './services/geminiService';
-import { saveProject, markAsPaid, getSupabase } from './services/supabaseClient';
+import Layout from './components/Layout.tsx';
+import IntakeForm from './components/IntakeForm.tsx';
+import ProcessingState from './components/ProcessingState.tsx';
+import ResultsView from './components/ResultsView.tsx';
+import SettingsManager from './components/SettingsManager.tsx';
+import SalesTeamSection from './components/SalesTeamSection.tsx';
+import DemoGallery from './components/DemoGallery.tsx';
+import { StagingProject, PropertyType } from './types.ts';
+import { PRICING_TIERS } from './constants.ts';
+import { stageRoom } from './services/geminiService.ts';
+import { saveProject, markAsPaid, getSupabase } from './services/supabaseClient.ts';
 
 enum AppStep {
   LANDING,
@@ -229,7 +229,7 @@ const App: React.FC = () => {
                     color: "green"
                   }
                 ].map((agent, i) => (
-                  <div key={i} className="bg-gray-800/50 border border-gray-700 p-8 rounded-[40px] hover:bg-gray-800 hover:border-blue-500 transition-all duration-500 group">
+                  <div key={i} className={`bg-gray-800/50 border border-gray-700 p-8 rounded-[40px] hover:bg-gray-800 hover:border-blue-500 transition-all duration-500 group`}>
                     <div className={`bg-${agent.color}-600/20 text-${agent.color}-500 w-16 h-16 rounded-3xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition duration-500 shadow-xl`}>
                       <i className={`fas ${agent.icon}`}></i>
                     </div>
