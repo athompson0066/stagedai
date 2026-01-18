@@ -1,0 +1,7 @@
+{
+  "name": "StagedAI - Virtual Real Estate Staging",
+  "description": "An intelligent, multi-agent virtual staging platform for property owners to instantly visualize and enhance listings to attract the right buyers.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
