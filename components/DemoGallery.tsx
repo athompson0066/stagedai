@@ -3,25 +3,36 @@ import React, { useState } from 'react';
 
 const DEMO_ITEMS = [
   {
+    title: "Kitchen Refresh",
+    before: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800",
+    after: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&q=80&w=800",
+    style: "Clean Chef's Kitchen",
+    persona: "Culinary Enthusiast",
+    description: "Deep Clean Crew: Removed cluttered photos, plants, and fridge-top items. Replaced counter clutter with a modern microwave."
+  },
+  {
     title: "Luxury Penthouse",
     before: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=800",
     after: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800",
     style: "Ultra-Luxury Modern",
-    persona: "High-Net-Worth Executive"
+    persona: "High-Net-Worth Executive",
+    description: "Multi-Agent Staging: Virtualized high-end Italian furniture and optimized sunset lighting."
   },
   {
     title: "Industrial Loft",
     before: "https://images.unsplash.com/photo-1515542706656-8e6ef17a1521?auto=format&fit=crop&q=80&w=800",
     after: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800",
     style: "Warm Industrial",
-    persona: "Creative Professional"
+    persona: "Creative Professional",
+    description: "Persona Staging: Added custom shelving and warm accent lighting for a live-work vibe."
   },
   {
     title: "Family Suburban Home",
     before: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
     after: "https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=800",
     style: "Cozy Transitional",
-    persona: "Modern Family"
+    persona: "Modern Family",
+    description: "Conversion Staging: Transformed a cold living room into a cozy, family-focused gathering spot."
   }
 ];
 
@@ -40,7 +51,7 @@ const DemoGallery: React.FC = () => {
             </h2>
           </div>
           <p className="text-gray-500 text-lg font-medium max-w-sm lg:text-right">
-            Drag the slider to see how our Multi-Agent AI reimagines empty spaces for specific buyer personas.
+            Drag the slider to see how our Multi-Agent AI reimagines empty or cluttered spaces for specific buyer personas.
           </p>
         </div>
 
@@ -57,11 +68,11 @@ const DemoGallery: React.FC = () => {
                     : 'border-gray-50 bg-white hover:border-gray-200'
                 }`}
               >
-                <div>
+                <div className="pr-4">
                   <h3 className={`font-black text-lg ${activeIdx === idx ? 'text-blue-600' : 'text-gray-900'}`}>{item.title}</h3>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">{item.persona}</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">{item.persona}</p>
                 </div>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeIdx === idx ? 'bg-blue-600 text-white rotate-90' : 'bg-gray-100 text-gray-400'}`}>
+                <div className={`w-10 h-10 min-w-[40px] rounded-full flex items-center justify-center transition-all ${activeIdx === idx ? 'bg-blue-600 text-white rotate-90' : 'bg-gray-100 text-gray-400'}`}>
                   <i className="fas fa-chevron-right text-xs"></i>
                 </div>
               </button>
@@ -105,9 +116,9 @@ const DemoGallery: React.FC = () => {
               
               {/* Floating Meta */}
               <div className="absolute bottom-8 left-8 right-8 flex justify-between items-center pointer-events-none">
-                <div className="glass-card px-6 py-4 rounded-[24px] shadow-xl border-white/50 backdrop-blur-xl">
-                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest block mb-1">Strategy Applied</span>
-                  <p className="text-sm font-black text-gray-900">{DEMO_ITEMS[activeIdx].style} for {DEMO_ITEMS[activeIdx].persona}</p>
+                <div className="glass-card px-6 py-4 rounded-[24px] shadow-xl border-white/50 backdrop-blur-xl max-w-xs">
+                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest block mb-1">Crew Summary</span>
+                  <p className="text-xs font-bold text-gray-900 leading-tight">{DEMO_ITEMS[activeIdx].description}</p>
                 </div>
               </div>
             </div>

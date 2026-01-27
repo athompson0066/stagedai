@@ -59,5 +59,6 @@ export interface StagingProject {
   usagePlatform?: string[];
   emotionalTone?: string;
   notes?: string;
+  isDeepCleanRequired?: boolean;
   status: 'draft' | 'processing' | 'completed' | 'failed';
 }

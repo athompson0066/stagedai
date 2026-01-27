@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const AGENT_MESSAGES = [
+  "Deep Clean Crew: Scrubbing surfaces and removing clutter...",
   "Room Analyzer: Identifying space layout and light sources...",
   "Strategy Agent: Researching buyer demographics for this property...",
   "Buyer Persona Expert: Curating furniture selection for your target audience...",
@@ -28,8 +29,8 @@ const ProcessingState: React.FC = () => {
           <i className="fas fa-couch text-blue-600 text-3xl"></i>
         </div>
       </div>
-      <h2 className="text-3xl font-bold mb-4">Staging Your Space...</h2>
-      <p className="text-xl text-gray-500 max-w-lg mb-8 h-12">
+      <h2 className="text-3xl font-bold mb-4">The Crew is at Work...</h2>
+      <p className="text-xl text-gray-500 max-w-lg mb-8 h-12 px-4 transition-all">
         {AGENT_MESSAGES[messageIndex]}
       </p>
       <div className="flex space-x-2">
@@ -37,8 +38,8 @@ const ProcessingState: React.FC = () => {
         <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-150"></div>
         <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-300"></div>
       </div>
-      <p className="mt-12 text-sm text-gray-400 italic">
-        "Visualization removes uncertainty—uncertainty kills decisions."
+      <p className="mt-12 text-sm text-gray-400 italic px-4">
+        "A spotless room is the canvas of a successful sale."
       </p>
     </div>
   );

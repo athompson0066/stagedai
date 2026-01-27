@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { PropertyGoal, BuyerPersona, StagingStyle, StagingProject, PropertyType, StyleRecommendation, MarketPositioning } from '../types';
-import { GOALS, PERSONAS, STYLES, PROPERTY_TYPES, POSITIONS, PLATFORMS, TONES } from '../constants';
-import { getStyleRecommendations, fetchImageFromUrl } from '../services/geminiService';
+import { PropertyGoal, BuyerPersona, StagingStyle, StagingProject, PropertyType, StyleRecommendation, MarketPositioning } from '../types.ts';
+import { GOALS, PERSONAS, STYLES, PROPERTY_TYPES, POSITIONS, PLATFORMS, TONES } from '../constants.ts';
+import { getStyleRecommendations, fetchImageFromUrl } from '../services/geminiService.ts';
 
 interface IntakeFormProps {
   onComplete: (data: Partial<StagingProject>) => void;
@@ -20,6 +20,7 @@ const IntakeForm: React.FC<IntakeFormProps> = ({ onComplete, onCancel }) => {
     marketPositioning: MarketPositioning.MID_RANGE,
     usagePlatform: [],
     emotionalTone: TONES[0],
+    isDeepCleanRequired: false,
     notes: ''
   });
   const [imageUrl, setImageUrl] = useState('');
@@ -293,22 +294,40 @@ const IntakeForm: React.FC<IntakeFormProps> = ({ onComplete, onCancel }) => {
               <h2 className="text-2xl font-bold mb-2">Final Review & Refine</h2>
               <p className="text-gray-500 mb-10">Add specific touches to ensure your vision is perfectly captured.</p>
               
-              <div className="bg-gray-50 rounded-[32px] p-8 mb-8 border border-gray-100">
-                <h3 className="font-black text-gray-400 text-[10px] uppercase tracking-[0.2em] mb-6 flex items-center justify-center">
-                  Selected Strategy
-                </h3>
-                <div className="grid grid-cols-2 gap-3 text-left max-w-lg mx-auto">
-                  {[
-                    { label: 'Objective', value: formData.goal },
-                    { label: 'Persona', value: formData.persona },
-                    { label: 'Style', value: formData.style },
-                    { label: 'Property', value: formData.propertyType }
-                  ].map((item, idx) => (
-                    <div key={idx} className="bg-white p-4 rounded-[20px] shadow-sm border border-gray-100">
-                      <span className="text-[9px] text-blue-400 font-black block mb-1 uppercase tracking-wider">{item.label}</span>
-                      <span className="font-bold text-gray-800 text-sm truncate block">{item.value}</span>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 max-w-2xl mx-auto">
+                {/* Deep Clean Option */}
+                <div 
+                  onClick={() => setFormData(prev => ({ ...prev, isDeepCleanRequired: !prev.isDeepCleanRequired }))}
+                  className={`p-6 rounded-[32px] border-2 cursor-pointer transition-all duration-300 flex flex-col items-center text-center group ${
+                    formData.isDeepCleanRequired ? 'border-blue-600 bg-blue-50/50 shadow-xl shadow-blue-100' : 'border-gray-100 bg-white hover:border-gray-200'
+                  }`}
+                >
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-colors ${formData.isDeepCleanRequired ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-400'}`}>
+                    <i className="fas fa-sparkles text-2xl"></i>
+                  </div>
+                  <h4 className="font-black text-sm uppercase tracking-tight">The White Glove Scrub</h4>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Deep cleaning & clutter removal</p>
+                  <div className={`mt-4 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] ${formData.isDeepCleanRequired ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                    {formData.isDeepCleanRequired ? 'Deep Clean Enabled' : 'Standard Prep'}
+                  </div>
+                </div>
+
+                {/* Summary Card */}
+                <div className="bg-gray-50 rounded-[32px] p-6 border border-gray-100 flex flex-col justify-center">
+                  <h3 className="font-black text-gray-400 text-[9px] uppercase tracking-[0.2em] mb-4 text-center">Engine Logic</h3>
+                  <div className="grid grid-cols-2 gap-2 text-left">
+                    {[
+                      { label: 'Objective', value: formData.goal },
+                      { label: 'Persona', value: formData.persona },
+                      { label: 'Style', value: formData.style },
+                      { label: 'Prep', value: formData.isDeepCleanRequired ? 'Deep Clean' : 'Standard' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-white p-2.5 rounded-[16px] shadow-sm border border-gray-100">
+                        <span className="text-[8px] text-blue-400 font-black block mb-0.5 uppercase tracking-wider">{item.label}</span>
+                        <span className="font-bold text-gray-800 text-[11px] truncate block">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
