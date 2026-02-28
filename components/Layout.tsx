@@ -51,6 +51,13 @@ const Layout: React.FC<LayoutProps> = ({ children, onHome, onOpenSettings, onNav
 
               {userProfile ? (
                 <div className="flex items-center space-x-6">
+                  <button
+                    onClick={onStartIntake}
+                    className="bg-blue-600/90 text-white px-6 py-2.5 rounded-[20px] text-xs font-black uppercase tracking-widest hover:bg-blue-500 transition shadow-[0_0_15px_rgba(37,99,235,0.4)] active:scale-95 backdrop-blur-sm border border-blue-500/50"
+                  >
+                    Stage Your Property
+                  </button>
+
                   <div className="flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full cursor-help transition-colors hover:border-white/20" title="Available Credits">
                     <i className="fas fa-coins text-yellow-400"></i>
                     <span className="text-white font-bold text-sm tracking-wide">{userProfile.credits}</span>
