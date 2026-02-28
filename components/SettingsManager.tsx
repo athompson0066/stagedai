@@ -13,11 +13,35 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ isOpen, onClose }) =>
   const [paypalClientId, setPaypalClientId] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
+  // Admin Auth State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   useEffect(() => {
     setSupabaseUrl(localStorage.getItem('STAGEDAI_SUPABASE_URL') || '');
     setSupabaseKey(localStorage.getItem('STAGEDAI_SUPABASE_ANON_KEY') || '');
     setPaypalClientId(localStorage.getItem('STAGEDAI_PAYPAL_CLIENT_ID') || '');
+
+    // Reset auth state on open
+    if (isOpen) {
+      setIsAuthenticated(false);
+      setUsername('');
+      setPassword('');
+      setLoginError('');
+    }
   }, [isOpen]);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === 'athompson' && password === 'Beachzipper66$') {
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid credentials');
+    }
+  };
 
   const handleSave = () => {
     initializeSupabase(supabaseUrl, supabaseKey);
@@ -56,64 +80,100 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ isOpen, onClose }) =>
           </button>
         </div>
 
-        <div className="p-8 space-y-6">
-          <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em]">Supabase Integration</h3>
+        {!isAuthenticated ? (
+          <form className="p-8 space-y-6" onSubmit={handleLogin}>
+            {loginError && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm mb-4">
+                {loginError}
+              </div>
+            )}
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Project URL</label>
-              <input 
-                type="text" 
-                value={supabaseUrl}
-                onChange={(e) => setSupabaseUrl(e.target.value)}
-                placeholder="https://your-id.supabase.co"
+              <label className="block text-sm font-bold text-gray-700 mb-2">Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="off"
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Anon Public Key</label>
-              <input 
-                type="password" 
-                value={supabaseKey}
-                onChange={(e) => setSupabaseKey(e.target.value)}
-                placeholder="your-anon-key"
+              <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition font-mono"
               />
             </div>
-          </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 active:scale-95 transition shadow-lg mt-4"
+            >
+              Verify Access
+            </button>
+          </form>
+        ) : (
+          <>
+            <div className="p-8 space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em]">Supabase Integration</h3>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Project URL</label>
+                  <input
+                    type="text"
+                    value={supabaseUrl}
+                    onChange={(e) => setSupabaseUrl(e.target.value)}
+                    placeholder="https://your-id.supabase.co"
+                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Anon Public Key</label>
+                  <input
+                    type="password"
+                    value={supabaseKey}
+                    onChange={(e) => setSupabaseKey(e.target.value)}
+                    placeholder="your-anon-key"
+                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition font-mono"
+                  />
+                </div>
+              </div>
 
-          <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em]">PayPal Live Mode</h3>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Live Client ID</label>
-              <input 
-                type="text" 
-                value={paypalClientId}
-                onChange={(e) => setPaypalClientId(e.target.value)}
-                placeholder="Live Production Client ID"
-                className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
-              />
-              <p className="text-[9px] text-gray-400 mt-2 italic px-1">Note: This will override the default sandbox 'sb' key in Results view.</p>
+              <div className="space-y-4">
+                <h3 className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em]">PayPal Live Mode</h3>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 ml-1">Live Client ID</label>
+                  <input
+                    type="text"
+                    value={paypalClientId}
+                    onChange={(e) => setPaypalClientId(e.target.value)}
+                    placeholder="Live Production Client ID"
+                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  />
+                  <p className="text-[9px] text-gray-400 mt-2 italic px-1">Note: This will override the default sandbox 'sb' key in Results view.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="p-8 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
-          <button 
-            onClick={handleSave}
-            disabled={isSaved}
-            className={`flex-grow py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition shadow-lg ${
-              isSaved ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-95'
-            }`}
-          >
-            {isSaved ? <><i className="fas fa-check mr-2"></i> Settings Saved</> : 'Apply Configuration'}
-          </button>
-          <button 
-            onClick={handleReset}
-            className="px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-400 hover:text-red-500 hover:bg-red-50 transition"
-          >
-            Reset All
-          </button>
-        </div>
+            <div className="p-8 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleSave}
+                disabled={isSaved}
+                className={`flex-grow py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition shadow-lg ${isSaved ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-95'
+                  }`}
+              >
+                {isSaved ? <><i className="fas fa-check mr-2"></i> Settings Saved</> : 'Apply Configuration'}
+              </button>
+              <button
+                onClick={handleReset}
+                className="px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-400 hover:text-red-500 hover:bg-red-50 transition"
+              >
+                Reset All
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
