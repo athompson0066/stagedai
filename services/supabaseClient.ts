@@ -42,7 +42,7 @@ export const initializeSupabase = (url: string, key: string) => {
 
   localStorage.setItem('STAGEDAI_SUPABASE_URL', url);
   localStorage.setItem('STAGEDAI_SUPABASE_ANON_KEY', key);
-  
+
   try {
     supabaseInstance = createClient(url, key);
     return supabaseInstance;
@@ -55,7 +55,7 @@ export const initializeSupabase = (url: string, key: string) => {
 export const saveProject = async (project: any) => {
   const client = getSupabase();
   if (!client) return null;
-  
+
   const { data, error } = await client
     .from('staging_projects')
     .insert([
@@ -71,7 +71,7 @@ export const saveProject = async (project: any) => {
       }
     ])
     .select();
-    
+
   if (error) throw error;
   return data ? data[0] : null;
 };
@@ -79,7 +79,7 @@ export const saveProject = async (project: any) => {
 export const saveInquiry = async (inquiry: { name: string, email: string, message: string }) => {
   const client = getSupabase();
   if (!client) return null;
-  
+
   const { data, error } = await client
     .from('inquiries')
     .insert([
@@ -91,7 +91,7 @@ export const saveInquiry = async (inquiry: { name: string, email: string, messag
       }
     ])
     .select();
-    
+
   if (error) throw error;
   return data;
 };
@@ -99,11 +99,33 @@ export const saveInquiry = async (inquiry: { name: string, email: string, messag
 export const markAsPaid = async (projectId: string) => {
   const client = getSupabase();
   if (!client) return;
-  
+
   const { error } = await client
     .from('staging_projects')
     .update({ is_paid: true })
     .eq('project_id', projectId);
-    
+
   if (error) throw error;
+};
+
+export const getUserProfile = async (userId: string) => {
+  const client = getSupabase();
+  if (!client) return null;
+
+  try {
+    const { data, error } = await client
+      .from('profiles')
+      .select('credits, avatar_url')
+      .eq('id', userId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // Ignore row not found error
+      console.error("Error fetching user profile:", error);
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Exception fetching user profile:", e);
+    return null;
+  }
 };

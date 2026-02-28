@@ -60,5 +60,11 @@ export interface StagingProject {
   emotionalTone?: string;
   notes?: string;
   isDeepCleanRequired?: boolean;
-  status: 'draft' | 'processing' | 'completed' | 'failed';
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  avatarUrl?: string;
+  credits: number;
 }

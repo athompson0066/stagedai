@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { UserProfile } from '../types';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,9 +8,11 @@ interface LayoutProps {
   onOpenSettings: () => void;
   onNavigateToSection: (id: string) => void;
   onStartIntake: () => void;
+  userProfile?: UserProfile | null;
+  onSignOut?: () => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, onHome, onOpenSettings, onNavigateToSection, onStartIntake }) => {
+const Layout: React.FC<LayoutProps> = ({ children, onHome, onOpenSettings, onNavigateToSection, onStartIntake, userProfile, onSignOut }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#050505]">
       <header className="bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
@@ -46,12 +49,34 @@ const Layout: React.FC<LayoutProps> = ({ children, onHome, onOpenSettings, onNav
                 <i className="fas fa-cog text-xl"></i>
               </button>
 
-              <button
-                onClick={onStartIntake}
-                className="bg-blue-600/90 text-white px-8 py-3.5 rounded-[20px] text-sm font-black uppercase tracking-widest hover:bg-blue-500 transition shadow-[0_0_20px_rgba(37,99,235,0.4)] active:scale-95 backdrop-blur-sm border border-blue-500/50"
-              >
-                Launch Studio
-              </button>
+              {userProfile ? (
+                <div className="flex items-center space-x-6">
+                  <div className="flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full cursor-help transition-colors hover:border-white/20" title="Available Credits">
+                    <i className="fas fa-coins text-yellow-400"></i>
+                    <span className="text-white font-bold text-sm tracking-wide">{userProfile.credits}</span>
+                  </div>
+
+                  <div className="flex items-center space-x-3 bg-white/5 border border-white/10 p-1.5 pr-4 rounded-full">
+                    {userProfile.avatarUrl ? (
+                      <img src={userProfile.avatarUrl} alt="Avatar" className="w-8 h-8 rounded-full object-cover border border-white/20" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm border border-white/20">
+                        {userProfile.email.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <button onClick={onSignOut} className="text-gray-400 hover:text-white transition text-sm font-semibold" title="Sign Out">
+                      <i className="fas fa-sign-out-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={onStartIntake}
+                  className="bg-blue-600/90 text-white px-8 py-3.5 rounded-[20px] text-sm font-black uppercase tracking-widest hover:bg-blue-500 transition shadow-[0_0_20px_rgba(37,99,235,0.4)] active:scale-95 backdrop-blur-sm border border-blue-500/50"
+                >
+                  Log In
+                </button>
+              )}
             </nav>
 
             <button className="md:hidden text-white hover:text-blue-400 transition">

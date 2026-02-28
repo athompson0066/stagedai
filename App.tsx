@@ -8,10 +8,10 @@ import SalesTeamSection from './components/SalesTeamSection.tsx';
 import DemoGallery from './components/DemoGallery.tsx';
 import AuthView from './components/AuthView.tsx';
 import Spline from '@splinetool/react-spline';
-import { StagingProject, PropertyType } from './types.ts';
+import { StagingProject, PropertyType, UserProfile } from './types.ts';
 import { PRICING_TIERS } from './constants.ts';
 import { stageRoom } from './services/geminiService.ts';
-import { saveProject, markAsPaid, getSupabase } from './services/supabaseClient.ts';
+import { saveProject, markAsPaid, getSupabase, getUserProfile } from './services/supabaseClient.ts';
 
 enum AppStep {
   LANDING,
@@ -29,19 +29,40 @@ const App: React.FC = () => {
 
   // Auth state
   const [session, setSession] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   React.useEffect(() => {
     const supabase = getSupabase();
     if (!supabase) return;
 
+    const fetchProfile = async (userId: string, email: string) => {
+      const data = await getUserProfile(userId);
+      setUserProfile({
+        id: userId,
+        email: email,
+        avatarUrl: data?.avatar_url as string | undefined,
+        credits: data?.credits || 0,
+      });
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session?.user) {
+        fetchProfile(session.user.id, session.user.email);
+      } else {
+        setUserProfile(null);
+      }
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session?.user) {
+        fetchProfile(session.user.id, session.user.email);
+      } else {
+        setUserProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -138,6 +159,11 @@ const App: React.FC = () => {
       onOpenSettings={() => setIsSettingsOpen(true)}
       onNavigateToSection={scrollToSection}
       onStartIntake={startIntake}
+      userProfile={userProfile}
+      onSignOut={async () => {
+        const supabase = getSupabase();
+        if (supabase) await supabase.auth.signOut();
+      }}
     >
       <SettingsManager isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
