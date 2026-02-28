@@ -52,22 +52,25 @@ export const PRICING_TIERS = [
   {
     name: 'Starter',
     price: '$29',
+    credits: 5,
     description: 'Perfect for single rooms or small listings.',
-    features: ['1 Staged Image', 'Single Style Variation', 'High-Res Download', 'disclosure badge'],
+    features: ['5 Staged Images', 'Single Style Variation', 'High-Res Download', 'disclosure badge'],
     recommended: false
   },
   {
     name: 'Persona Pack',
     price: '$79',
+    credits: 15,
     description: 'Best for attracting multiple buyer segments.',
-    features: ['3 Style Variations', 'Persona-Based Targeting', 'Priority Processing', 'A/B Testing Hero Images'],
+    features: ['15 Staged Images', '3 Style Variations', 'Persona-Based Targeting', 'Priority Processing'],
     recommended: true
   },
   {
     name: 'Full Property',
     price: '$149',
+    credits: 35,
     description: 'The ultimate package for complete listings.',
-    features: ['Up to 6 Rooms', 'Multiple Style Choices', 'Rush Delivery', 'Commercial Usage Rights'],
+    features: ['35 Staged Images', 'Up to 6 Rooms', 'Multiple Style Choices', 'Rush Delivery', 'Commercial Usage Rights'],
     recommended: false
   }
 ];

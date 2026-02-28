@@ -260,7 +260,11 @@ const App: React.FC = () => {
                       <div className="absolute top-0 right-0 bg-gradient-to-l from-blue-600 to-indigo-600 text-white text-xs font-bold uppercase tracking-widest py-2 px-6 rounded-bl-3xl">Most Popular</div>
                     )}
                     <h3 className="text-2xl font-black text-white mb-2">{tier.name}</h3>
-                    <div className="text-5xl font-black text-white mb-6 tracking-tighter">{tier.price}</div>
+                    <div className="text-5xl font-black text-white mb-2 tracking-tighter">{tier.price}</div>
+                    <div className="flex items-center justify-center space-x-2 bg-blue-500/10 text-blue-400 font-bold py-1.5 px-4 rounded-full w-fit mx-auto mb-6 border border-blue-500/20">
+                      <i className="fas fa-coins text-yellow-400"></i>
+                      <span>{tier.credits} Image Credits</span>
+                    </div>
                     <ul className="space-y-4 mb-10 text-left">
                       {tier.features.map((f, j) => (
                         <li key={j} className="flex items-center text-sm font-medium text-gray-300">
