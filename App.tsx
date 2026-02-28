@@ -5,6 +5,7 @@ import ProcessingState from './components/ProcessingState.tsx';
 import ResultsView from './components/ResultsView.tsx';
 import SettingsManager from './components/SettingsManager.tsx';
 import SalesTeamSection from './components/SalesTeamSection.tsx';
+import ContactSection from './components/ContactSection.tsx';
 import DemoGallery from './components/DemoGallery.tsx';
 import AuthView from './components/AuthView.tsx';
 import Spline from '@splinetool/react-spline';
@@ -278,6 +279,7 @@ const App: React.FC = () => {
           </section>
 
           <SalesTeamSection />
+          <ContactSection />
         </div>
       )}
 
